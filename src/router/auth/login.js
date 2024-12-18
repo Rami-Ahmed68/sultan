@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const dotenv = require("dotenv");
 const _ = require("lodash");
 
 // import the user model
@@ -8,6 +7,9 @@ const User = require("../../model/user/user");
 
 // compare password
 const compare = require("../../controller/utils/password/compaer");
+
+// generate_token
+const generate_token = require("../../controller/utils/token/generate_token");
 
 // validate error method
 const ApiErrors = require("../../controller/utils/validation_error");
@@ -34,6 +36,56 @@ router.post("/", async (req, res, next) => {
     }
 
     // get to the admin by id
+    const admin = await User.findOne({ email: req.body.email });
+
+    // check if the admin is exists
+    if (!admin) {
+      return next(
+        new ApiErrors(
+          JSON.stringify({
+            english: `Sorry, invalid email or password ...`,
+            arabic: `... عذرا خطأ في الايميل او الباسورد`,
+          }),
+          404
+        )
+      );
+    }
+
+    // compare password and check if its seems
+    if (compare(admin.password) != req.body.password) {
+      return next(
+        new ApiErrors(
+          JSON.stringify({
+            english: "Sorry, invalid email or password ...",
+            arabic: "... عذرا خطأ في الايميل او الباسورد",
+          }),
+          404
+        )
+      );
+    }
+
+    //generate new token
+    const token = generate_token(admin._id, admin.email);
+
+    // create the response
+    const response = {
+      message: "Loged in successfully ...",
+      admin_data: _.pick(admin, [
+        "_id",
+        "name",
+        "email",
+        "avatar",
+        "description",
+        "bio",
+        "whatsapp",
+        "phone",
+        "links",
+      ]),
+      token: token,
+    };
+
+    // send the response to clinet
+    res.status(200).send(response);
   } catch (error) {
     // return error
     return next(
@@ -47,3 +99,5 @@ router.post("/", async (req, res, next) => {
     );
   }
 });
+
+module.exports = router;

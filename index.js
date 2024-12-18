@@ -10,9 +10,15 @@ const Global = require("./src/controller/middleware/validation_error/validation_
 const ApiErrors = require("./src/controller/utils/validation_error");
 // import error validation method
 
+// importing the auth files
 const create = require("./src/router/auth/create");
+const login = require("./src/router/auth/login");
+// importing the auth files
 
+// redirect the request to the correct file
 app.use("/test", create);
+app.use("/test", login);
+// redirect the request to the correct file
 
 // handling not found
 app.use("*", (req, res, next) => {
