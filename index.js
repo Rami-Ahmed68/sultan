@@ -16,8 +16,8 @@ const login = require("./src/router/auth/login");
 // importing the auth files
 
 // redirect the request to the correct file
-app.use("/test", create);
-app.use("/test", login);
+app.use("/api/v1/sultan/create", create);
+app.use("/api/v1/sultan//login", login);
 // redirect the request to the correct file
 
 // handling not found

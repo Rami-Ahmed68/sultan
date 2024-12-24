@@ -4,12 +4,7 @@ const Joi = require("joi");
 const validate_error = (data) => {
   // create a Schema
   const Schema = Joi.object().keys({
-    name: Joi.string().allow(""),
-    password: Joi.string().allow(""),
-    description: Joi.string().allow(""),
-    bio: Joi.string().allow(""),
-    whatsapp: Joi.string().allow(""),
-    phone: Joi.string().allow(""),
+    _id: Joi.string().required(),
   });
 
   // validate the body data

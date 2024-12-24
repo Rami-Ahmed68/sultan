@@ -52,7 +52,7 @@ router.post("/", async (req, res, next) => {
     }
 
     // compare password and check if its seems
-    if (compare(admin.password) != req.body.password) {
+    if (!compare(admin.password, req.body.password)) {
       return next(
         new ApiErrors(
           JSON.stringify({
@@ -80,6 +80,7 @@ router.post("/", async (req, res, next) => {
         "whatsapp",
         "phone",
         "links",
+        "cv",
       ]),
       token: token,
     };

@@ -12,7 +12,7 @@ const User = require("../../model/user/user");
 const validation_error = require("../../controller/middleware/joi_validation/auth/create");
 
 // import generate_token token method
-const generate_token = require("../../controller/utils/token/generae_token");
+const generate_token = require("../../controller/utils/token/generate_token");
 
 // import uploading avatar
 const upload_avatar = require("../../controller/utils/multer/avatar/upload.avatar");
@@ -40,20 +40,32 @@ router.post("/", upload_avatar, async (req, res, next) => {
       );
     }
 
+    // hashed password
+    const hashedPassword = await hash(req.body.password);
+
     // create new user
     const user = new User({
       name: req.body.name,
       email: req.body.email,
-      passwoed: await hash(req.body.passwoed),
-      description: req.body.description,
-      bio: req.body.bio,
-      whatsapp: req.body.whatsapp,
-      phone: req.body.phone,
-      links: req.body.links,
+      password: hashedPassword,
+      description: req.body.description ? req.body.description : "",
+      bio: req.body.bio ? req.body.bio : "",
+      whatsapp: req.body.whatsapp ? req.body.whatsapp : "",
+      phone: req.body.phone ? req.body.phone : "",
+      links: req.body.links ? req.body.links : "",
     });
 
     // save the user in data base
     await user.save();
+
+    // check if the req has more than 1 file
+    if (req.files) {
+      // delete the image
+      DeleteImage(req.file, next);
+    }
+
+    // delete the avatar from avatar folder
+    // DeleteImage(req.files, next);
 
     // create the response
     const response = {
@@ -62,12 +74,12 @@ router.post("/", upload_avatar, async (req, res, next) => {
         "name",
         "cover",
         "email",
-        "password",
         "description",
         "bio",
         "whatsapp",
         "phone",
         "links",
+        "cv",
       ]),
       // generate token
       token: generate_token(user._id, user.email),
@@ -76,8 +88,11 @@ router.post("/", upload_avatar, async (req, res, next) => {
     // send the response
     res.status(200).send(response);
   } catch (error) {
-    // delete the image
-    DeleteImage(req.file, next);
+    // check if the req has more than 1 file
+    if (req.files) {
+      // delete the image
+      DeleteImage(req.file, next);
+    }
 
     // return error
     return next(
