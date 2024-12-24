@@ -14,7 +14,7 @@ const DeleteImage = require("../../controller/utils/multer/delete.image");
 const VerifyToken = require("../../controller/utils/token/verify_token");
 
 // import validation error method
-const validate_error = require("../../controller/middleware/joi_validation/auth/update.cover");
+const validate_error = require("../../controller/middleware/joi_validation/auth/update.avatar");
 
 // import upload avatar method
 const upload_avatar = require("../../controller/utils/multer/avatar/upload.avatar");
