@@ -23,7 +23,7 @@ const upload_cv = require("../../controller/utils/multer/cv/upload.cv");
 const Upload_Cloudinary = require("../../controller/middleware/cloudinary/upload_cloudinary");
 
 // delete the image from cloudinary method
-const delete_Cloudinary = require("../../controller/middleware/cloudinary/delete_cloudinary");
+const delete_cloudinary = require("../../controller/middleware/cloudinary/delete_cloudinary");
 
 router.put("/", upload_cv, async (req, res, next) => {
   try {
@@ -32,6 +32,9 @@ router.put("/", upload_cv, async (req, res, next) => {
 
     // check if the body data has any error
     if (Error.error) {
+      // delete the image
+      DeleteImage(req.file, next);
+
       // return the error
       return next(
         new ApiErrors(
@@ -45,7 +48,7 @@ router.put("/", upload_cv, async (req, res, next) => {
     }
 
     // check if the request has a file
-    if (req.files.length < 1) {
+    if (!req.file) {
       // return error
       return next(
         new ApiErrors(
@@ -67,7 +70,7 @@ router.put("/", upload_cv, async (req, res, next) => {
     // check if the admin id in token is like the id in body
     if (verify_token_data._id != req.body._id) {
       // delete image
-      DeleteImage(req.files[0], next);
+      DeleteImage(req.file, next);
 
       // return the error
       return next(
@@ -86,6 +89,9 @@ router.put("/", upload_cv, async (req, res, next) => {
 
     // check if the admin is exists
     if (!admin) {
+      // delete the cv
+      DeleteImage(req.file, next);
+
       // return error
       return next(
         new ApiErrors(
@@ -99,27 +105,31 @@ router.put("/", upload_cv, async (req, res, next) => {
     }
 
     // delete the old cv from cloudinary
-    await delete_Cloudinary(admin.cv, next);
+    await delete_cloudinary(admin.cv, next);
 
     // upload the new cv
-    const new_cv = await Upload_Cloudinary(req.files[0], next);
+    const new_cv = await Upload_Cloudinary(req.file, "cv", next);
 
     // update the cv
     admin.cv = new_cv;
 
+    // save the admin after updated the cv
+    await admin.save();
+
     // create response
     const response = {
-      image_path: new_cv,
+      messgae: JSON.stringify({
+        english: "The CV updated successfully",
+        arabic: "تم تعديل السي في بنجاح",
+      }),
+      cv_url: new_cv,
     };
 
     // send the response
     res.status(200).send(response);
   } catch (error) {
-    // check if the request has any file
-    if (req.files.length > 0) {
-      // delete the uploaded image
-      DeleteImage(req.files[0], next);
-    }
+    // delete the uploaded image
+    DeleteImage(req.file, next);
 
     // return the error
     return next(
