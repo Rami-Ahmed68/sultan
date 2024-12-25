@@ -14,10 +14,10 @@ const DeleteImage = require("../../controller/utils/multer/delete.image");
 const VerifyToken = require("../../controller/utils/token/verify_token");
 
 // import validation error method
-const validate_error = require("../../controller/middleware/joi_validation/auth/update.avatar");
+const validate_error = require("../../controller/middleware/joi_validation/auth/update.cv");
 
-// import upload avatar method
-const upload_avatar = require("../../controller/utils/multer/avatar/upload.avatar");
+// import upload cv method
+const upload_cv = require("../../controller/utils/multer/cv/upload.cv");
 
 // upload the image to cloudinary method
 const Upload_Cloudinary = require("../../controller/middleware/cloudinary/upload_cloudinary");
@@ -25,7 +25,7 @@ const Upload_Cloudinary = require("../../controller/middleware/cloudinary/upload
 // delete the image from cloudinary method
 const delete_Cloudinary = require("../../controller/middleware/cloudinary/delete_cloudinary");
 
-router.put("/", upload_avatar, async (req, res, next) => {
+router.put("/", upload_cv, async (req, res, next) => {
   try {
     // validate body data
     const Error = validate_error(req.body);
@@ -98,18 +98,18 @@ router.put("/", upload_avatar, async (req, res, next) => {
       );
     }
 
-    // delete the old avatar from cloudinary
-    await delete_Cloudinary(admin.avatar, next);
+    // delete the old cv from cloudinary
+    await delete_Cloudinary(admin.cv, next);
 
-    // upload the new avatar
-    const new_avatar = await Upload_Cloudinary(req.files[0], next);
+    // upload the new cv
+    const new_cv = await Upload_Cloudinary(req.files[0], next);
 
-    // update the avatar
-    admin.avatar = new_avatar;
+    // update the cv
+    admin.cv = new_cv;
 
     // create response
     const response = {
-      image_path: new_avatar,
+      image_path: new_cv,
     };
 
     // send the response

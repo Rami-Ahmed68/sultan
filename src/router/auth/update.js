@@ -8,17 +8,8 @@ const ApiErrors = require("../../controller/utils/validation_error");
 // import user model
 const User = require("../../model/user/user");
 
-// import uploading avatar
-const upload_avatar = require("../../controller/utils/multer/avatar/upload.avatar");
-
-// import deleteing image method
-const DeleteImage = require("../../controller/utils/multer/delete.image");
-
 // import hashing password's method
 const hash = require("../../controller/utils/password/hash");
-
-// import the compaering passwords method
-const compaer = require("../../controller/utils/password/compaer");
 
 // importing the verify token method
 const verify_token = require("../../controller/utils/token/verify_token");
@@ -26,10 +17,7 @@ const verify_token = require("../../controller/utils/token/verify_token");
 // import the validation error method
 const validate_error = require("../../controller/middleware/joi_validation/auth/update");
 
-// hashing password method
-const hash = require("../../controller/utils/password/hash");
-
-router.put("/", upload_avatar, async (req, res, next) => {
+router.put("/", async (req, res, next) => {
   try {
     // validate the body
     const Error = validate_error(req.body);

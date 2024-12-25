@@ -4,7 +4,7 @@ dotenv.config({ path: "../../../config/.env" });
 const path = require("path");
 
 // api error method
-const ApiErrors = require("../../../controller/middleware/validation_error/validation_error");
+const ApiErrors = require("../../../controller/utils/validation_error");
 
 // create cloudinary configration
 cloudinary.config({
@@ -29,7 +29,15 @@ const Upload_Cloudinary = async (file, folder, next) => {
     // return the data
     return data.secure_url;
   } catch (error) {
-    return next(new ApiErrors(error, 500));
+    return next(
+      new ApiErrors(
+        JSON.stringify({
+          english: `${error} ...`,
+          arabic: "... عذرا خطأ اثناء رفع الافاتار",
+        }),
+        500
+      )
+    );
   }
 };
 

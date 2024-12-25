@@ -1,10 +1,9 @@
 const cloudinary = require("cloudinary");
 const dotenv = require("dotenv");
 dotenv.config({ path: "../../../config/.env" });
-const path = require("path");
 
 // api error method
-const ApiErrors = require("../../../controller/middleware/validation_error/validation_error");
+const ApiErrors = require("../../../controller/utils/validation_error");
 
 // create cloudinary configration
 cloudinary.config({
@@ -13,13 +12,13 @@ cloudinary.config({
   api_secret: process.env.API_SECRET_KEY,
 });
 
-const DeleteCloudinary = async (image, next) => {
+const delete_cloudinary = async (image, next) => {
   try {
     // split the omage url
-    const Image_data = image.split("/");
+    const Image_url = image.split("/");
 
     // extract the image publick Id
-    const publicId = Image_data[Image_data.length - 1].split(".")[0];
+    const publicId = Image_url[Image_url.length - 1].split(".")[0];
 
     // delete the image from cloudinary by his public It
     const Data = await cloudinary.uploader.destroy(publicId);
@@ -28,8 +27,16 @@ const DeleteCloudinary = async (image, next) => {
     return Data;
   } catch (error) {
     // return th error
-    return next(new ApiErrors(error, 500));
+    return next(
+      new ApiErrors(
+        JSON.stringify({
+          english: `${error} ...`,
+          arabic: "... عذرا خطأ حدث اثناء حذف الافاتار",
+        }),
+        500
+      )
+    );
   }
 };
 
-module.exports = DeleteCloudinary;
+module.exports = delete_cloudinary;

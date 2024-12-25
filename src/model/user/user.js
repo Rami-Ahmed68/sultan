@@ -42,6 +42,9 @@ const user = new mongoose.Schema({
       },
     },
   ],
+  avatar: {
+    type: String,
+  },
   cv: {
     type: String,
   },

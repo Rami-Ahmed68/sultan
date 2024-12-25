@@ -13,11 +13,17 @@ const ApiErrors = require("./src/controller/utils/validation_error");
 // importing the auth files
 const create = require("./src/router/auth/create");
 const login = require("./src/router/auth/login");
+const update = require("./src/router/auth/update");
+const change_avatar = require("./src/router/auth/change.avatar");
+const change_cv = require("./src/router/auth/change.cv");
 // importing the auth files
 
 // redirect the request to the correct file
 app.use("/api/v1/sultan/create", create);
-app.use("/api/v1/sultan//login", login);
+app.use("/api/v1/sultan/login", login);
+app.use("/api/v1/sultan/update", update);
+app.use("/api/v1/sultan/avatar", change_avatar);
+app.use("/api/v1/sultan/cv", change_cv);
 // redirect the request to the correct file
 
 // handling not found
