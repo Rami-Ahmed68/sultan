@@ -113,11 +113,8 @@ router.put("/", async (req, res, next) => {
     // send the response to clinte
     res.status(200).send(response);
   } catch (error) {
-    // check if the request has any image
-    if (req.files.length > 0) {
-      // delete it
-      DeleteImage(req.file, next);
-    }
+    // delete it
+    DeleteImage(req.file, next);
 
     // return the error
     return next(
