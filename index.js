@@ -11,21 +11,29 @@ const ApiErrors = require("./src/controller/utils/validation_error");
 // import error validation method
 
 // importing the auth files
-const create = require("./src/router/auth/create");
+const create_admin = require("./src/router/auth/create");
 const login = require("./src/router/auth/login");
-const update = require("./src/router/auth/update");
+const update_admin = require("./src/router/auth/update");
 const change_avatar = require("./src/router/auth/change.avatar");
 const change_cv = require("./src/router/auth/change.cv");
 const get_admin_data = require("./src/router/auth/get");
 // importing the auth files
 
 // redirect the request to the correct file
-app.use("/api/v1/sultan/create", create);
+app.use("/api/v1/sultan/create", create_admin);
 app.use("/api/v1/sultan/login", login);
-app.use("/api/v1/sultan/update", update);
+app.use("/api/v1/sultan/update", update_admin);
 app.use("/api/v1/sultan/avatar", change_avatar);
 app.use("/api/v1/sultan/cv", change_cv);
 app.use("/api/v1/sultan/get", get_admin_data);
+// redirect the request to the correct file
+
+// importing the auth files
+const create_work = require("./src/router/work/create");
+// importing the auth files
+
+// redirect the request to the correct file
+app.use("/api/v1/sultan/work/create", create_work);
 // redirect the request to the correct file
 
 // handling not found

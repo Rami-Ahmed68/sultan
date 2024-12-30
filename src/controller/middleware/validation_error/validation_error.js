@@ -1,11 +1,11 @@
-const Global = (error , req , res , next) => {
+const Global = (error, req, res, next) => {
   error.statusCode = error.statusCode || 500;
   error.status = error.status || "error";
   res.status(error.statusCode).json({
-    status : error.status,
-    error : error,
-    message : JSON.parse(error.message),
-    stack : error.stack
+    status: error.status,
+    error: error,
+    message: JSON.parse(error.message),
+    stack: error.stack,
   });
 };
 

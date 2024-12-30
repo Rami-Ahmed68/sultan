@@ -33,7 +33,8 @@ router.post("/", upload_avatar, async (req, res, next) => {
       return next(
         new ApiErrors(
           JSON.stringify({
-            english: Error.error.details[0].message,
+            english: `${Error.error.details[0].message} ...`,
+            arabic: "... عذرا خطأ في البيانات المرسلة",
           }),
           400
         )

@@ -116,6 +116,9 @@ router.put("/", upload_cv, async (req, res, next) => {
     // save the admin after updated the cv
     await admin.save();
 
+    // delete the image from cv folder
+    DeleteImage(req.file, next);
+
     // create response
     const response = {
       messgae: JSON.stringify({
