@@ -17,6 +17,10 @@ const work = new mongoose.Schema({
   video: {
     type: String,
   },
+  video_cover: {
+    type: String,
+    default: "",
+  },
   link: {
     type: String,
     required: false,

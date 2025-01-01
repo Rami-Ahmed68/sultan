@@ -20,10 +20,10 @@ const validate_error = require("../../controller/middleware/joi_validation/auth/
 const upload_avatar = require("../../controller/utils/multer/avatar/upload.avatar");
 
 // upload the image to cloudinary method
-const Upload_Cloudinary = require("../../controller/middleware/cloudinary/upload_cloudinary");
+const Upload_Cloudinary = require("../../controller/middleware/cloudinary/upload.cloudinary.image");
 
 // delete the image from cloudinary method
-const delete_cloudinary = require("../../controller/middleware/cloudinary/delete_cloudinary");
+const delete_cloudinary = require("../../controller/middleware/cloudinary/delete.cloudinary.image");
 
 router.put("/", upload_avatar, async (req, res, next) => {
   try {

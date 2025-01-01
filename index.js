@@ -30,10 +30,14 @@ app.use("/api/v1/sultan/get", get_admin_data);
 
 // importing the auth files
 const create_work = require("./src/router/work/create");
+const delete_work = require("./src/router/work/delete");
+const change_work_cover = require("./src/router/work/change.cover");
 // importing the auth files
 
 // redirect the request to the correct file
 app.use("/api/v1/sultan/work/create", create_work);
+app.use("/api/v1/sultan/work/delete", delete_work);
+app.use("/api/v1/sultan/work/cover/update", change_work_cover);
 // redirect the request to the correct file
 
 // handling not found

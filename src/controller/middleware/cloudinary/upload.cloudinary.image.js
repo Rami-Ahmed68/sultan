@@ -4,7 +4,7 @@ dotenv.config({ path: "../../../config/.env" });
 const path = require("path");
 
 // api error method
-const ApiErrors = require("../../../controller/utils/validation_error");
+const ApiErrors = require("../../utils/validation_error");
 
 // create cloudinary configration
 cloudinary.config({
@@ -13,7 +13,7 @@ cloudinary.config({
   api_secret: process.env.API_SECRET_KEY,
 });
 
-const Upload_Cloudinary = async (file, folder, next) => {
+const upload_cloudinary_image = async (file, folder, next) => {
   try {
     // create the image path
     const Image_path = path.join(
@@ -41,4 +41,4 @@ const Upload_Cloudinary = async (file, folder, next) => {
   }
 };
 
-module.exports = Upload_Cloudinary;
+module.exports = upload_cloudinary_image;

@@ -19,16 +19,16 @@ const validation_error = require("../../controller/middleware/joi_validation/wor
 // verify token method
 const verify_token = require("../../controller/utils/token/verify_token");
 
-// upload the work's images using multer method
-const upload_work_images = require("../../controller/utils/multer/work/upload.work.images");
-
 // import uploading single video method
-const upload_video = require("../../controller/utils/multer/work/upload.work.video");
+const upload_files = require("../../controller/utils/multer/work/upload.work.video");
 
-// import upload cloudinary
-const Upload_Cloudinary = require("../../controller/middleware/cloudinary/upload_cloudinary");
+// import upload images to cloudinary method
+const upload_cloudinary_image = require("../../controller/middleware/cloudinary/upload.cloudinary.image");
 
-router.post("/", upload_video, async (req, res, next) => {
+// import upload videos to cloudinary method
+const upload_video_cloudinary = require("../../controller/middleware/cloudinary/upload.cloudinary.video");
+
+router.post("/", upload_files, async (req, res, next) => {
   try {
     // validation body data
     const Error = validation_error(req.body);
@@ -107,18 +107,32 @@ router.post("/", upload_video, async (req, res, next) => {
       return file.mimetype.startsWith("image");
     });
 
-    // upload the video file to cloudinary
-    let uploaded_video = await Upload_Cloudinary(videos[0], "work", next);
+    // check if the request has any video
+    if (videos.length > 0) {
+      // upload the video file to cloudinary
+      let uploaded_video = await upload_video_cloudinary(
+        videos[0],
+        "work",
+        next
+      );
 
-    // set the uploaded video to the created work
-    work.video = uploaded_video;
+      // set the uploaded video to the created work
+      work.video = uploaded_video;
+    }
 
-    // upload the image file to cloudinary
-    for (let i = 0; i < images.length; i++) {
-      let uploaded_image = await Upload_Cloudinary(images[i], "work", next);
+    // check if the request has any image
+    if (images.length > 0) {
+      // upload the image file to cloudinary
+      for (let i = 0; i < images.length; i++) {
+        let uploaded_image = await upload_cloudinary_image(
+          images[i],
+          "work",
+          next
+        );
 
-      // add the uploaded image url into the new work's images
-      work.images.push(uploaded_image);
+        // add the uploaded image url into the new work's images
+        work.images.push(uploaded_image);
+      }
     }
 
     // save the work in data base
@@ -135,6 +149,7 @@ router.post("/", upload_video, async (req, res, next) => {
         english: "Work Created Successfully",
         arabic: "تم انشاء العمل بنجاح",
       },
+      work_data: work,
     };
 
     // send the response to clint
