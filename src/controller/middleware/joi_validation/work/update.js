@@ -2,11 +2,15 @@ const Joi = require("joi");
 
 const validation_data = (data) => {
   const Schema = Joi.object().keys({
-    title: Joi.string().required(),
-    description: Joi.string().required(),
+    admin_id: Joi.string().required(),
+    work_id: Joi.string().required(),
+    title: Joi.string(),
+    description: Joi.string(),
     link: Joi.string(),
-    created_at: Joi.string().required(),
-    tags: Joi.string().required(),
+    created_at: Joi.string(),
+    tags: Joi.string(),
+    images_for_delete: Joi.string(),
+    video_reaction: Joi.string(),
   });
 
   // validate data

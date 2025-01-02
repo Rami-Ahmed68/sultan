@@ -4,14 +4,14 @@ const router = express.Router();
 // import the validate error method
 const ApiErrors = require("../../controller/utils/validation_error");
 
-// import the work model
-const Work = require("../../model/work/work");
+// import the lesson model
+const Lesson = require("../../model/lesson/lesson");
 
 // import the User (admin) model
 const User = require("../../model/user/user");
 
 // import the upload video cover method
-const upload_work_cover = require("../../controller/utils/multer/work/upload.work.cover");
+const upload_lesson_cover = require("../../controller/utils/multer/lesson/upload.lesson.cover");
 
 // importthe dlete image method
 const DeleteImage = require("../../controller/utils/multer/delete.files");
@@ -23,12 +23,12 @@ const upload_cloudinary_image = require("../../controller/middleware/cloudinary/
 const delete_cloudinary = require("../../controller/middleware/cloudinary/delete.cloudinary.image");
 
 // import the validate body data method
-const validation_error = require("../../controller/middleware/joi_validation/work/change.cover");
+const validation_error = require("../../controller/middleware/joi_validation/lesson/change.cover");
 
 // import the verify token method
 const verify_token = require("../../controller/utils/token/verify_token");
 
-router.put("/", upload_work_cover, async (req, res, next) => {
+router.put("/", upload_lesson_cover, async (req, res, next) => {
   try {
     // check if the request has a cover or not
     if (req.files && req.files.length > 1) {
@@ -113,11 +113,11 @@ router.put("/", upload_work_cover, async (req, res, next) => {
       );
     }
 
-    // find the work
-    const work = await Work.findById(req.body.work_id);
+    // find the lesson
+    const lesson = await Lesson.findById(req.body.lesson_id);
 
     // check if the body is exists or not
-    if (!work) {
+    if (!lesson) {
       // delete the uploaded cover
       DeleteImage(req.files[0], next);
 
@@ -125,7 +125,7 @@ router.put("/", upload_work_cover, async (req, res, next) => {
       return next(
         new ApiErrors(
           JSON.stringify({
-            english: "Sorry, invalid work nodt found ...",
+            english: "Sorry, invalid lesson nodt found ...",
             arabic: "... عذرا لم يتم العثور على العمل ",
           }),
           404
@@ -133,22 +133,22 @@ router.put("/", upload_work_cover, async (req, res, next) => {
       );
     }
 
-    // check if the work alerady has a cover and delete it
-    if (work.video_cover && work.video_cover != "") {
+    // check if the lesson alerady has a cover and delete it
+    if (lesson.video_cover && lesson.video_cover != "") {
       // delete the old cover
-      await delete_cloudinary(work.video_cover, next);
+      await delete_cloudinary(lesson.video_cover, next);
     }
 
     // upload the new cover to cloudinary
     const uploaded_cover = await upload_cloudinary_image(
       req.files[0],
-      "work",
+      "lesson",
       next
     );
 
-    // find the work andupdate the video_cover
-    const updated_work = await Work.findByIdAndUpdate(
-      { _id: req.body.work_id },
+    // find the lesson andupdate the video_cover
+    const updated_lesson = await Lesson.findByIdAndUpdate(
+      { _id: req.body.lesson_id },
       {
         $set: {
           video_cover: uploaded_cover,
@@ -157,11 +157,11 @@ router.put("/", upload_work_cover, async (req, res, next) => {
       { new: true }
     );
 
-    // delete the uploaded cover from work folder
+    // delete the uploaded cover from lesson folder
     DeleteImage(req.files[0], next);
 
-    // save the work after changed the cover
-    await work.save();
+    // save the lesson after changed the cover
+    await lesson.save();
 
     // create response
     const response = {
@@ -169,7 +169,7 @@ router.put("/", upload_work_cover, async (req, res, next) => {
         english: "Cover changed successfully ...",
         arabic: "تم تعديل الغلاف بنجاح",
       },
-      work_data: updated_work,
+      lesson_data: updated_lesson,
     };
 
     // send the response

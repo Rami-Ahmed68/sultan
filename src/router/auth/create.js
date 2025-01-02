@@ -18,7 +18,7 @@ const generate_token = require("../../controller/utils/token/generate_token");
 const upload_avatar = require("../../controller/utils/multer/avatar/upload.avatar");
 
 // import the delete images method
-const DeleteImage = require("../../controller/utils/multer/delete.image");
+const DeleteImage = require("../../controller/utils/multer/delete.files");
 
 // import hash method
 const hash = require("../../controller/utils/password/hash");

@@ -43,7 +43,8 @@ router.put("/", async (req, res, next) => {
       !req.body.description &&
       !req.body.bio &&
       !req.body.whatsapp &&
-      !req.body.phone
+      !req.body.phone &&
+      !req.body.skills_page_status
     ) {
       // return error
       return next(
@@ -94,6 +95,9 @@ router.put("/", async (req, res, next) => {
         bio: req.body.bio ? req.body.bio : admin.bio,
         whatsapp: req.body.whatsapp ? req.body.whatsapp : admin.whatsapp,
         phone: req.body.phone ? req.body.phone : admin.phone,
+        skills_page_status: req.body.skills_page_status
+          ? req.body.skills_page_status
+          : admin.skills_page_status,
       },
       { new: true }
     );
@@ -107,6 +111,7 @@ router.put("/", async (req, res, next) => {
         "bio",
         "whatsapp",
         "phone",
+        "skills_page_status",
       ]),
     };
 

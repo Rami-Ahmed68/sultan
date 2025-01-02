@@ -33,7 +33,7 @@ const delete_cloudinary_video = async (image, next) => {
       new ApiErrors(
         JSON.stringify({
           english: `${error} ...`,
-          arabic: "... عذرا خطأ حدث اثناء حذف الصورة",
+          arabic: "... عذرا خطأ حدث اثناء حذف الفيديو",
         }),
         500
       )

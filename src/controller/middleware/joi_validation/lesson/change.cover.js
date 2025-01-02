@@ -1,12 +1,13 @@
 const Joi = require("joi");
 
-const validation_data = (data) => {
+const validation_error = (data) => {
+  // create the Schema
   const Schema = Joi.object().keys({
     admin_id: Joi.string().required(),
-    work_id: Joi.string().required(),
+    lesson_id: Joi.string().required(),
   });
 
-  // validate data
+  // validate the body data
   const Error = Schema.validate(data);
 
   // check if the data has any error and return it
@@ -17,4 +18,4 @@ const validation_data = (data) => {
   }
 };
 
-module.exports = validation_data;
+module.exports = validation_error;

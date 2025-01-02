@@ -8,7 +8,7 @@ const ApiErrors = require("../../controller/utils/validation_error");
 const User = require("../../model/user/user");
 
 // import delete image method
-const DeleteImage = require("../../controller/utils/multer/delete.image");
+const DeleteImage = require("../../controller/utils/multer/delete.files");
 
 // import verify token method
 const VerifyToken = require("../../controller/utils/token/verify_token");

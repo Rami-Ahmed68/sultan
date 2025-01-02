@@ -11,16 +11,16 @@ const Work = require("../../model/work/work");
 const User = require("../../model/user/user");
 
 // import delete image method
-const DeleteImage = require("../../controller/utils/multer/delete.image");
+const DeleteImage = require("../../controller/utils/multer/delete.files");
 
 // import validation error method
-const validation_error = require("../../controller/middleware/joi_validation/work/create");
+const validation_data = require("../../controller/middleware/joi_validation/work/create");
 
 // verify token method
 const verify_token = require("../../controller/utils/token/verify_token");
 
 // import uploading single video method
-const upload_files = require("../../controller/utils/multer/work/upload.work.video");
+const upload_files = require("../../controller/utils/multer/work/upload.work.files");
 
 // import upload images to cloudinary method
 const upload_cloudinary_image = require("../../controller/middleware/cloudinary/upload.cloudinary.image");
@@ -31,7 +31,7 @@ const upload_video_cloudinary = require("../../controller/middleware/cloudinary/
 router.post("/", upload_files, async (req, res, next) => {
   try {
     // validation body data
-    const Error = validation_error(req.body);
+    const Error = validation_data(req.body);
 
     // check if the body data has any error
     if (Error.error) {
@@ -64,7 +64,7 @@ router.post("/", upload_files, async (req, res, next) => {
     // find the admin by his id in token
     const admin = await User.findById(verify_token_data._id);
 
-    // check if the admin is exixsts or not
+    // check if the admin is exists or not
     if (!admin) {
       // check if the request has any image
       if (req.files.length > 0) {
@@ -93,7 +93,7 @@ router.post("/", upload_files, async (req, res, next) => {
       link: req.body.link ? req.body.link : "",
       video: "",
       images: [],
-      created_at: req.body.created_at ? req.body.created : new Date(),
+      created_at: req.body.created_at,
       tags: req.body.tags ? req.body.tags.split(",") : [],
     });
 

@@ -28,16 +28,50 @@ app.use("/api/v1/sultan/cv", change_cv);
 app.use("/api/v1/sultan/get", get_admin_data);
 // redirect the request to the correct file
 
-// importing the auth files
+// importing the work files
 const create_work = require("./src/router/work/create");
 const delete_work = require("./src/router/work/delete");
+const update_work = require("./src/router/work/update");
 const change_work_cover = require("./src/router/work/change.cover");
-// importing the auth files
+const get_work = require("./src/router/work/get.one");
+const get_works = require("./src/router/work/get.all");
+// importing the work files
 
 // redirect the request to the correct file
 app.use("/api/v1/sultan/work/create", create_work);
 app.use("/api/v1/sultan/work/delete", delete_work);
+app.use("/api/v1/sultan/work/update", update_work);
 app.use("/api/v1/sultan/work/cover/update", change_work_cover);
+app.use("/api/v1/sultan/work/get/one", get_work);
+app.use("/api/v1/sultan/work/get/all", get_works);
+// redirect the request to the correct file
+
+// importing the lesson files
+const create_lesson = require("./src/router/lesson/create");
+const delete_lesson = require("./src/router/lesson/delete");
+const update_lesson = require("./src/router/lesson/update");
+const change_lesson_cover = require("./src/router/lesson/change.cover");
+const get_lesson = require("./src/router/lesson/get.one");
+const get_lessons = require("./src/router/lesson/get.all");
+// importing the lesson files
+
+// redirect the request to the correct file
+app.use("/api/v1/sultan/lesson/create", create_lesson);
+app.use("/api/v1/sultan/lesson/delete", delete_lesson);
+app.use("/api/v1/sultan/lesson/update", update_lesson);
+app.use("/api/v1/sultan/lesson/cover/update", change_lesson_cover);
+app.use("/api/v1/sultan/lesson/get/one", get_lesson);
+app.use("/api/v1/sultan/lesson/get/all", get_lessons);
+// redirect the request to the correct file
+
+// importing the skill files
+const create_skill = require("./src/router/skills/create");
+const delete_skill = require("./src/router/skills/delete");
+// importing the skill files
+
+// redirect the request to the correct file
+app.use("/api/v1/sultan/skill/create", create_skill);
+app.use("/api/v1/sultan/skill/delete", delete_skill);
 // redirect the request to the correct file
 
 // handling not found

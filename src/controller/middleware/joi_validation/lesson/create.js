@@ -4,9 +4,7 @@ const validation_data = (data) => {
   const Schema = Joi.object().keys({
     title: Joi.string().required(),
     description: Joi.string().required(),
-    link: Joi.string(),
     created_at: Joi.string().required(),
-    tags: Joi.string().required(),
   });
 
   // validate data

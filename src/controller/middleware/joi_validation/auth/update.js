@@ -10,6 +10,7 @@ const validate_error = (data) => {
     bio: Joi.string().allow(""),
     whatsapp: Joi.string().allow(""),
     phone: Joi.string().allow(""),
+    skills_page_status: Joi.boolean().required(),
   });
 
   // validate the body data

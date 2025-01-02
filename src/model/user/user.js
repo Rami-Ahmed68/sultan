@@ -48,6 +48,12 @@ const user = new mongoose.Schema({
   cv: {
     type: String,
   },
+  // this filed is just to show or hidde
+  skills_page_status: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 
 const User = mongoose.model("user", user);

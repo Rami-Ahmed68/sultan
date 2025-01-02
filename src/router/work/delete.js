@@ -11,7 +11,7 @@ const Work = require("../../model/work/work");
 const ApiErrors = require("../../controller/utils/validation_error");
 
 // import validation body data method
-const validation_error = require("../../controller/middleware/joi_validation/work/delete");
+const validation_data = require("../../controller/middleware/joi_validation/work/delete");
 
 // verify token method
 const verify_token = require("../../controller/utils/token/verify_token");
@@ -25,7 +25,7 @@ const delete_cloudinary_video = require("../../controller/middleware/cloudinary/
 router.delete("/", async (req, res, next) => {
   try {
     // validate body data
-    const Error = validation_error(req.body);
+    const Error = validation_data(req.body);
 
     // check if the body data has any error
     if (Error.error) {

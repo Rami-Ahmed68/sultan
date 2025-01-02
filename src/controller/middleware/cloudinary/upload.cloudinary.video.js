@@ -17,7 +17,7 @@ cloudinary.config({
 
 const upload_video_cloudinary = async (file, folder, next) => {
   try {
-    // الخيارات الافتراضية للرفع
+    // default upload options
     const defaultOptions = {
       resource_type: "video",
     };
@@ -29,9 +29,7 @@ const upload_video_cloudinary = async (file, folder, next) => {
     );
 
     // upload the video
-    const result = await cloudinary.uploader.upload(video_path, {
-      resource_type: "video",
-    });
+    const result = await cloudinary.uploader.upload(video_path, defaultOptions);
 
     // return the uploaded video's url
     return result.secure_url;

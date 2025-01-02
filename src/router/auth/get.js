@@ -30,6 +30,7 @@ router.get("/:who_want", async (req, res, next) => {
         "phon",
         "whatsapp",
         "links",
+        "skills_page_status",
       ]);
     } else {
       // get to the all admin's data without password and email and id
