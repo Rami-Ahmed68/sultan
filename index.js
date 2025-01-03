@@ -4,6 +4,16 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./src/config/.env" });
 const app = express();
 app.use(express.json());
+const cors = require("cors");
+
+// select the api methods and origin ( who can use the api's )
+const cors_options = {
+  origin: "*",
+  methods: "GET,PUT,POST,DELETE",
+};
+
+// to allow use the api
+app.use(cors(cors_options));
 
 // import error validation method
 const Global = require("./src/controller/middleware/validation_error/validation_error");
@@ -67,11 +77,27 @@ app.use("/api/v1/sultan/lesson/get/all", get_lessons);
 // importing the skill files
 const create_skill = require("./src/router/skills/create");
 const delete_skill = require("./src/router/skills/delete");
+const update_skill = require("./src/router/skills/update");
+const get_skill = require("./src/router/skills/get.one");
+const get_skills = require("./src/router/skills/get.all");
+const change_icon_skill = require("./src/router/skills/change.icon");
 // importing the skill files
 
 // redirect the request to the correct file
 app.use("/api/v1/sultan/skill/create", create_skill);
 app.use("/api/v1/sultan/skill/delete", delete_skill);
+app.use("/api/v1/sultan/skill/update", update_skill);
+app.use("/api/v1/sultan/skill/get/one", get_skill);
+app.use("/api/v1/sultan/skill/get/all", get_skills);
+app.use("/api/v1/sultan/skill/change/icon", change_icon_skill);
+// redirect the request to the correct file
+
+// importing the skill page status files
+const change_skills_page_status = require("./src/router/skills_page/change.skills.page.status");
+// importing the skill page status files
+
+// redirect the request to the correct file
+app.use("/api/v1/sultan/skills/page/change/status", change_skills_page_status);
 // redirect the request to the correct file
 
 // handling not found
@@ -94,7 +120,7 @@ app.use(Global);
 
 //! connecting to data base
 mongoose
-  .connect(process.env.DATA_BASE)
+  .connect(process.env.MONGODB_SECRET)
   .then(() => {
     console.log("#####connected#####");
   })

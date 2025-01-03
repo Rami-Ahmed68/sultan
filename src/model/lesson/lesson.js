@@ -50,7 +50,7 @@ const lesson = new mongoose.Schema({
     ],
   },
   program: {
-    type: [String],
+    type: String,
     enum: [
       "Adobe Photoshop",
       "Adobe Illustrator",

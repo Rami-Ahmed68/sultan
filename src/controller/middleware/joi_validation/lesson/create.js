@@ -5,6 +5,10 @@ const validation_data = (data) => {
     title: Joi.string().required(),
     description: Joi.string().required(),
     created_at: Joi.string().required(),
+    link: Joi.string(),
+    tags: Joi.string(),
+    program: Joi.string().required(),
+    level: Joi.string().required(),
   });
 
   // validate data

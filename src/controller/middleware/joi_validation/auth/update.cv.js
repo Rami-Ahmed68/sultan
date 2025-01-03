@@ -12,7 +12,7 @@ const validate_error = (data) => {
 
   // check if the data has any error or not and return it
   if (Error.error) {
-    return Error.error;
+    return Error;
   } else {
     return true;
   }

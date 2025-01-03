@@ -9,6 +9,20 @@ const Work = require("../../model/work/work");
 
 router.get("/", async (req, res, next) => {
   try {
+    // check if the quesry has an work id
+    if (!req.query.work_id) {
+      // return error
+      return next(
+        new ApiErrors(
+          JSON.stringify({
+            english: "Sorry, you should send a work id ...",
+            arabic: "... عذرا يجب ارسال معرف العمل",
+          }),
+          404
+        )
+      );
+    }
+
     // get the work by his id
     const work = await Work.findById(req.query.work_id);
 

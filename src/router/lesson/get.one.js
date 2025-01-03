@@ -9,6 +9,20 @@ const Lesson = require("../../model/lesson/lesson");
 
 router.get("/", async (req, res, next) => {
   try {
+    // check if the quesry has an lesson id
+    if (!req.query.lesson_id) {
+      // return error
+      return next(
+        new ApiErrors(
+          JSON.stringify({
+            english: "Sorry, you should send a lesson id ...",
+            arabic: "... عذرا يجب ارسال معرف الدرس",
+          }),
+          404
+        )
+      );
+    }
+
     // get the lesson by his id
     const lesson = await Lesson.findById(req.query.lesson_id);
 
