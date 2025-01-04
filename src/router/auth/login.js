@@ -69,7 +69,10 @@ router.post("/", async (req, res, next) => {
 
     // create the response
     const response = {
-      message: "Loged in successfully ...",
+      message: {
+        english: `Loged in successfully, welcome ${this.admin_data.name}`,
+        arabic: ` ${this.admin_data.name} تم تسجيل الدخول بنجاح, اهلا`,
+      },
       admin_data: _.pick(admin, [
         "_id",
         "name",
