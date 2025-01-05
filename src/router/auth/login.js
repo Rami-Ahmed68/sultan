@@ -37,8 +37,6 @@ router.post("/", async (req, res, next) => {
 
     // get to the admin by id
     const admin = await User.findOne({ email: req.body.email });
-    console.log(admin.password);
-    console.log(req.body.password);
 
     // check if the admin is exists
     if (!admin) {
@@ -55,8 +53,7 @@ router.post("/", async (req, res, next) => {
 
     // compare password and check if its seems
     const compaer_password = await compare(req.body.password, admin.password);
-    console.log(compaer_password);
-    if (compaer_password == false) {
+    if (!compaer_password) {
       return next(
         new ApiErrors(
           JSON.stringify({
@@ -74,8 +71,8 @@ router.post("/", async (req, res, next) => {
     // create the response
     const response = {
       message: {
-        english: `Loged in successfully, welcome ${this.admin_data.name}`,
-        arabic: ` ${this.admin_data.name} تم تسجيل الدخول بنجاح, اهلا`,
+        english: `Loged in successfully, welcome ${this.admin.name}`,
+        arabic: ` ${this.admin.name} تم تسجيل الدخول بنجاح, اهلا`,
       },
       admin_data: _.pick(admin, [
         "_id",
