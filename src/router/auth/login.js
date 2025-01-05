@@ -52,7 +52,9 @@ router.post("/", async (req, res, next) => {
     }
 
     // compare password and check if its seems
-    if (!compare(admin.password, req.body.password)) {
+    const compaer_password = await compare(admin.password, req.body.password);
+
+    if (!compaer_password) {
       return next(
         new ApiErrors(
           JSON.stringify({
