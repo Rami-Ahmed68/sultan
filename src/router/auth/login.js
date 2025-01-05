@@ -36,7 +36,7 @@ router.post("/", async (req, res, next) => {
     }
 
     // get to the admin by id
-    const admin = await User.findById({ email: req.body.email });
+    const admin = await User.findById(req.body.email);
 
     // check if the admin is exists
     if (!admin) {
