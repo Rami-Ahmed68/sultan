@@ -36,7 +36,7 @@ router.post("/", async (req, res, next) => {
     }
 
     // get to the admin by id
-    const admin = await User.findOne({ email: req.body.email });
+    const admin = await User.findById({ email: req.body.email });
 
     // check if the admin is exists
     if (!admin) {
@@ -53,8 +53,8 @@ router.post("/", async (req, res, next) => {
 
     // compare password and check if its seems
     const compaer_password = await compare(admin.password, req.body.password);
-    console.log(compaer_password);
-    if (compaer_password == false) {
+
+    if (!compaer_password) {
       return next(
         new ApiErrors(
           JSON.stringify({
