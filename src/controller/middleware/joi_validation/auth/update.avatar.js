@@ -1,7 +1,7 @@
 const Joi = require("joi");
 
 // validat error method
-const validate_error = (data) => {
+const validate_data = (data) => {
   // create a Schema
   const Schema = Joi.object().keys({
     _id: Joi.string().required(),
@@ -18,4 +18,4 @@ const validate_error = (data) => {
   }
 };
 
-module.exports = validate_error;
+module.exports = validate_data;

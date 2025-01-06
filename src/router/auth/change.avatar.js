@@ -14,7 +14,7 @@ const DeleteImage = require("../../controller/utils/multer/delete.files");
 const VerifyToken = require("../../controller/utils/token/verify_token");
 
 // import validation error method
-const validate_error = require("../../controller/middleware/joi_validation/auth/update.avatar");
+const validate_data = require("../../controller/middleware/joi_validation/auth/update.avatar");
 
 // import upload avatar method
 const upload_avatar = require("../../controller/utils/multer/avatar/upload.avatar");
@@ -34,8 +34,8 @@ router.put("/", upload_avatar, async (req, res, next) => {
       }
     }
     // validate body data
-    const Error = validate_error(req.body);
-
+    const Error = validate_data(req.body);
+    console.log(Error);
     // check if the body data has any error
     if (Error.error) {
       // delete image
