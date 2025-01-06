@@ -4,8 +4,10 @@ const validation_data = (data) => {
   const Schema = Joi.object().keys({
     admin_id: Joi.string().required(),
     skill_id: Joi.string().required(),
-    title: Joi.string(),
-    description: Joi.string(),
+    english_title: Joi.string(),
+    arabic_title: Joi.string(),
+    english_description: Joi.string(),
+    arabic_description: Joi.string(),
     created_at: Joi.string(),
   });
 

@@ -109,10 +109,18 @@ router.put("/", async (req, res, next) => {
       { _id: req.body.skill_id },
       {
         $set: {
-          title: req.body.title ? req.body.title : skill.title,
-          description: req.body.description
-            ? req.body.description
-            : skill.description,
+          english_title: req.body.english_title
+            ? req.body.english_title
+            : skill.english_title,
+          arabic_title: req.body.arabic_title
+            ? req.body.arabic_title
+            : skill.arabic_title,
+          english_description: req.body.english_description
+            ? req.body.english_description
+            : skill.english_description,
+          arabic_description: req.body.arabic_description
+            ? req.body.arabic_description
+            : skill.arabic_description,
           created_at: req.body.created_at
             ? req.body.created_at
             : skill.created_at,

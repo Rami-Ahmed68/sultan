@@ -88,8 +88,10 @@ router.post("/", upload_files, async (req, res, next) => {
 
     // create the new lesson's Object
     const lesson = new Lesson({
-      title: req.body.title,
-      description: req.body.description,
+      english_title: req.body.english_title,
+      english_description: req.body.english_description,
+      arabic_title: req.body.arabic_title,
+      arabic_description: req.body.arabic_description,
       link: req.body.link ? req.body.link : "",
       video: "",
       images: [],

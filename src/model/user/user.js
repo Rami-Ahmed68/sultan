@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 
 const user = new mongoose.Schema({
-  name: {
+  english_name: {
+    type: String,
+    required: true,
+  },
+  english_name: {
     type: String,
     required: true,
   },
@@ -13,11 +17,19 @@ const user = new mongoose.Schema({
     type: String,
     required: true,
   },
-  description: {
+  english_description: {
     type: String,
     required: true,
   },
-  bio: {
+  english_description: {
+    type: String,
+    required: true,
+  },
+  english_bio: {
+    type: String,
+    required: true,
+  },
+  english_bio: {
     type: String,
     required: true,
   },

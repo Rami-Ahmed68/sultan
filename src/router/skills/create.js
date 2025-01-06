@@ -94,8 +94,10 @@ router.post("/", upload_icon, async (req, res, next) => {
 
     // create the skill
     const skill = new Skill({
-      title: req.body.title,
-      description: req.body.description,
+      english_title: req.body.english_title,
+      english_description: req.body.english_description,
+      arabic_title: req.body.arabic_title,
+      arabic_description: req.body.arabic_description,
       created_at: req.body.created_at,
     });
 

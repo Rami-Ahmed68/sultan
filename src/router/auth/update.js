@@ -38,10 +38,13 @@ router.put("/", async (req, res, next) => {
 
     // check if the body not empty
     if (
-      !req.body.name &&
+      !req.body.english_name &&
+      !req.body.english_description &&
+      !req.body.english_bio &&
+      !req.body.arabic_name &&
+      !req.body.arabic_description &&
+      !req.body.arabic_bio &&
       !req.body.password &&
-      !req.body.description &&
-      !req.body.bio &&
       !req.body.whatsapp &&
       !req.body.telegram &&
       !req.body.facebook &&
@@ -91,14 +94,23 @@ router.put("/", async (req, res, next) => {
     const new_admin = await User.findByIdAndUpdate(
       { _id: admin._id },
       {
-        name: req.body.name ? req.body.name : "",
+        english_name: req.body.english_name ? req.body.english_name : "",
+        arabic_name: req.body.arabic_name ? req.body.arabic_name : "",
         password: req.body.password
           ? await hash(req.body.password)
           : admin.password,
-        description: req.body.description
-          ? req.body.description
-          : admin.description,
-        bio: req.body.bio ? req.body.bio : admin.bio,
+        english_description: req.body.english_description
+          ? req.body.english_description
+          : admin.english_description,
+        arabic_description: req.body.arabic_description
+          ? req.body.arabic_description
+          : admin.arabic_description,
+        english_bio: req.body.english_bio
+          ? req.body.english_bio
+          : admin.english_bio,
+        arabic_bio: req.body.arabic_bio
+          ? req.body.arabic_bio
+          : admin.arabic_bio,
         whatsapp: req.body.whatsapp ? req.body.whatsapp : admin.whatsapp,
         telegram: req.body.telegram ? req.body.telegram : admin.telegram,
         facebook: req.body.facebook ? req.body.facebook : admin.facebook,
@@ -120,9 +132,12 @@ router.put("/", async (req, res, next) => {
     const response = {
       data: _.pick(new_admin, [
         "_id",
-        "name",
-        "description",
-        "bio",
+        "english_name",
+        "english_description",
+        "english_bio",
+        "arabic_name",
+        "arabic_description",
+        "arabic_bio",
         "phon",
         "whatsapp",
         "telegram",

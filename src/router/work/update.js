@@ -62,8 +62,10 @@ router.put("/", upload_files, async (req, res, next) => {
 
     // check if the request has a new data
     if (
-      !req.body.title &&
-      !req.body.description &&
+      !req.body.english_title &&
+      !req.body.english_description &&
+      !req.body.arabic_title &&
+      !req.body.arabic_description &&
       !req.body.link &&
       !req.body.created_at &&
       !req.body.tags &&
@@ -185,10 +187,18 @@ router.put("/", upload_files, async (req, res, next) => {
       { _id: req.body.work_id },
       {
         $set: {
-          title: req.body.title ? req.body.title : work.title,
-          description: req.body.description
-            ? req.body.description
-            : work.description,
+          english_title: req.body.english_title
+            ? req.body.english_title
+            : work.english_title,
+          english_description: req.body.english_description
+            ? req.body.english_description
+            : work.english_description,
+          arabic_title: req.body.arabic_title
+            ? req.body.arabic_title
+            : work.arabic_title,
+          arabic_description: req.body.arabic_description
+            ? req.body.arabic_description
+            : work.arabic_description,
           link: req.body.link ? req.body.link : work.link,
           tags: req.body.tags ? JSON.parse(req.body.tags) : work.tags,
           created_at: req.body.created_at

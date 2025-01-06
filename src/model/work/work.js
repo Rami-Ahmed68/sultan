@@ -1,11 +1,19 @@
 const mongoose = require("mongoose");
 
 const work = new mongoose.Schema({
-  title: {
+  english_title: {
     type: String,
     required: true,
   },
-  description: {
+  arabic_title: {
+    type: String,
+    required: true,
+  },
+  english_description: {
+    type: String,
+    required: true,
+  },
+  arabic_description: {
     type: String,
     required: true,
   },

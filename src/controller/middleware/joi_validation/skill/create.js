@@ -2,8 +2,10 @@ const Joi = require("joi");
 
 const validation_data = (data) => {
   const Schema = Joi.object().keys({
-    title: Joi.string().required(),
-    description: Joi.string(),
+    english_title: Joi.string().required(),
+    arabic_title: Joi.string().required(),
+    english_description: Joi.string(),
+    arabic_description: Joi.string(),
     created_at: Joi.string().required(),
   });
 
