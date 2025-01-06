@@ -8,7 +8,7 @@ const User = require("../../model/user/user");
 // import error handling method
 const ApiErrors = require("../../controller/utils/validation_error");
 
-router.get("/:who_want", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     // find the admin
     const admin = await User.find();

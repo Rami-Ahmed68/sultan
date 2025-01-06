@@ -27,6 +27,7 @@ const update_admin = require("./src/router/auth/update");
 const change_avatar = require("./src/router/auth/change.avatar");
 const change_cv = require("./src/router/auth/change.cv");
 const get_admin_data = require("./src/router/auth/get");
+const get_admin_links = require("./src/router/auth/get_links");
 // importing the auth files
 
 // redirect the request to the correct file
@@ -36,6 +37,7 @@ app.use("/api/v1/sultan/update", update_admin);
 app.use("/api/v1/sultan/avatar", change_avatar);
 app.use("/api/v1/sultan/cv", change_cv);
 app.use("/api/v1/sultan/get", get_admin_data);
+app.use("/api/v1/sultan/get/links", get_admin_links);
 // redirect the request to the correct file
 
 // importing the work files
