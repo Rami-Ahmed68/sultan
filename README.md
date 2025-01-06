@@ -27,3 +27,5 @@ The lesson and work are similar with the addition of failed level to the lesson.
 ## skill
 
 He can create, update, delete and access any skill but the skill hasn't anyvideo or cover or images just a icon of skill
+
+..
