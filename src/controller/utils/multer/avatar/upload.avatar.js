@@ -24,6 +24,6 @@ const upload_avatar = multer({
       callback(null, true);
     }
   },
-}).single("avatar");
+}).array("avatar");
 
 module.exports = upload_avatar;
