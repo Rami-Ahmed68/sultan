@@ -9,6 +9,12 @@ const validate_error = (data) => {
     description: Joi.string().allow(""),
     bio: Joi.string().allow(""),
     whatsapp: Joi.string().allow(""),
+    telegram: Joi.string().allow(""),
+    facebook: Joi.string().allow(""),
+    instgram: Joi.string().allow(""),
+    linkedIn: Joi.string().allow(""),
+    behance: Joi.string().allow(""),
+    email_address: Joi.string().allow(""),
     phone: Joi.string().allow(""),
     skills_page_status: Joi.boolean().required(),
   });

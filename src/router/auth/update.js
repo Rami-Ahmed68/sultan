@@ -43,6 +43,12 @@ router.put("/", async (req, res, next) => {
       !req.body.description &&
       !req.body.bio &&
       !req.body.whatsapp &&
+      !req.body.telegram &&
+      !req.body.facebook &&
+      !req.body.instgram &&
+      !req.body.linkedIn &&
+      !req.body.behance &&
+      !req.body.email_address &&
       !req.body.phone &&
       !req.body.skills_page_status
     ) {
@@ -94,6 +100,14 @@ router.put("/", async (req, res, next) => {
           : admin.description,
         bio: req.body.bio ? req.body.bio : admin.bio,
         whatsapp: req.body.whatsapp ? req.body.whatsapp : admin.whatsapp,
+        telegram: req.body.telegram ? req.body.telegram : admin.telegram,
+        facebook: req.body.facebook ? req.body.facebook : admin.facebook,
+        instgram: req.body.instgram ? req.body.instgram : admin.instgram,
+        linkedIn: req.body.linkedIn ? req.body.linkedIn : admin.linkedIn,
+        behance: req.body.behance ? req.body.behance : admin.behance,
+        email_address: req.body.email_address
+          ? req.body.email_address
+          : admin.email_address,
         phone: req.body.phone ? req.body.phone : admin.phone,
         skills_page_status: req.body.skills_page_status
           ? req.body.skills_page_status
@@ -109,8 +123,14 @@ router.put("/", async (req, res, next) => {
         "name",
         "description",
         "bio",
+        "phon",
         "whatsapp",
-        "phone",
+        "telegram",
+        "facebook",
+        "instgram",
+        "linkedIn",
+        "behance",
+        "email_address",
         "skills_page_status",
       ]),
     };

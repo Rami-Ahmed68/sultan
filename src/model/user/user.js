@@ -25,23 +25,34 @@ const user = new mongoose.Schema({
     type: String,
     required: true,
   },
+  telegram: {
+    type: String,
+    required: true,
+  },
+  facebook: {
+    type: String,
+    required: true,
+  },
+  instgram: {
+    type: String,
+    required: true,
+  },
+  linkedIn: {
+    type: String,
+    required: true,
+  },
+  behance: {
+    type: String,
+    required: true,
+  },
+  email_address: {
+    type: String,
+    required: true,
+  },
   phone: {
     type: String,
     required: true,
   },
-  links: [
-    {
-      type: Object,
-      title: {
-        type: String,
-        required: true,
-      },
-      address: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
   avatar: {
     type: String,
   },

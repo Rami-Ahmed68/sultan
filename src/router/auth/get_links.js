@@ -16,17 +16,9 @@ router.get("/:who_want", async (req, res, next) => {
     // create list of admin's data
     let admin_data;
 
-    // check who want the admin data
-    if (req.params.who_want == "admin") {
-      // get to the all admin's data without password
-      admin_data = _.pick(admin[0], [
-        "_id",
-        "avatar",
-        "cv",
-        "name",
-        "email",
-        "description",
-        "bio",
+    // create response
+    const response = {
+      admin_data: (admin_data = _.pick(admin[0], [
         "phon",
         "whatsapp",
         "telegram",
@@ -36,29 +28,7 @@ router.get("/:who_want", async (req, res, next) => {
         "behance",
         "email_address",
         "skills_page_status",
-      ]);
-    } else {
-      // get to the all admin's data without password and email and id
-      admin_data = _.pick(admin[0], [
-        "avatar",
-        "cv",
-        "name",
-        "description",
-        "bio",
-        "phon",
-        "whatsapp",
-        "telegram",
-        "facebook",
-        "instgram",
-        "linkedIn",
-        "behance",
-        "email_address",
-      ]);
-    }
-
-    // create response
-    const response = {
-      admin_data: admin_data,
+      ])),
     };
 
     // send the response to the clint
