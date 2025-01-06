@@ -46,8 +46,6 @@ router.get("/:who_want", async (req, res, next) => {
       ]);
     }
 
-    console.log(admin_data);
-
     // create response
     const response = {
       admin_data: admin_data,

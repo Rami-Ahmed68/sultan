@@ -21,7 +21,12 @@ const upload_avatar = multer({
     if (file.mimetype == "image/png" || file.mimetype == "image/jpeg") {
       callback(null, true);
     } else {
-      callback(null, true);
+      new Error(
+        JSON.stringify({
+          english: "Sorry, Invalid file type. Only Image files are allowed ...",
+          arabic: "... عذرا خطأ في صيغة الملف , فقط ملفات الصور",
+        })
+      );
     }
   },
 }).array("avatar");

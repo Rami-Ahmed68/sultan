@@ -27,13 +27,20 @@ const delete_cloudinary = require("../../controller/middleware/cloudinary/delete
 
 router.put("/", upload_cv, async (req, res, next) => {
   try {
+    // check if the requets has more than one image
+    if (req.files.length > 1) {
+      for (let i = 0; i < req.files.length; i++) {
+        DeleteImage(req.files[i], next);
+      }
+    }
+
     // validate body data
     const Error = validate_error(req.body);
 
     // check if the body data has any error
     if (Error.error) {
       // delete the image
-      DeleteImage(req.file, next);
+      DeleteImage(req.files[0], next);
 
       // return the error
       return next(
@@ -48,7 +55,7 @@ router.put("/", upload_cv, async (req, res, next) => {
     }
 
     // check if the request has a file
-    if (!req.file) {
+    if (!req.files[0]) {
       // return error
       return next(
         new ApiErrors(
@@ -70,7 +77,7 @@ router.put("/", upload_cv, async (req, res, next) => {
     // check if the admin id in token is like the id in body
     if (verify_token_data._id != req.body._id) {
       // delete image
-      DeleteImage(req.file, next);
+      DeleteImage(req.files[0], next);
 
       // return the error
       return next(
@@ -90,7 +97,7 @@ router.put("/", upload_cv, async (req, res, next) => {
     // check if the admin is exists
     if (!admin) {
       // delete the cv
-      DeleteImage(req.file, next);
+      DeleteImage(req.files[0], next);
 
       // return error
       return next(
@@ -108,7 +115,7 @@ router.put("/", upload_cv, async (req, res, next) => {
     await delete_cloudinary(admin.cv, next);
 
     // upload the new cv
-    const new_cv = await Upload_Cloudinary(req.file, "cv", next);
+    const new_cv = await Upload_Cloudinary(req.files[0], "cv", next);
 
     // update the cv
     admin.cv = new_cv;
@@ -117,7 +124,7 @@ router.put("/", upload_cv, async (req, res, next) => {
     await admin.save();
 
     // delete the image from cv folder
-    DeleteImage(req.file, next);
+    DeleteImage(req.files[0], next);
 
     // create response
     const response = {
@@ -131,8 +138,13 @@ router.put("/", upload_cv, async (req, res, next) => {
     // send the response
     res.status(200).send(response);
   } catch (error) {
-    // delete the uploaded image
-    DeleteImage(req.file, next);
+    // check if the requets has more than one image
+    if (req.files.length > 1) {
+      // delete the uploaded image
+      for (let i = 0; i < req.files.length; i++) {
+        DeleteImage(req.files[i], next);
+      }
+    }
 
     // return the error
     return next(
