@@ -7,10 +7,10 @@ const ApiErrors = require("../../controller/utils/validation_error");
 // import the validate Work model
 const Work = require("../../model/work/work");
 
-router.get("/", async (req, res, next) => {
+router.get("/:work_id", async (req, res, next) => {
   try {
     // check if the quesry has an work id
-    if (!req.query.work_id) {
+    if (!req.params.work_id) {
       // return error
       return next(
         new ApiErrors(
@@ -24,7 +24,7 @@ router.get("/", async (req, res, next) => {
     }
 
     // get the work by his id
-    const work = await Work.findById(req.query.work_id);
+    const work = await Work.findById(req.params.work_id);
 
     // check if the body is exists or not
     if (!work) {
