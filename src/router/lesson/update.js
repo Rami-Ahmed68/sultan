@@ -63,7 +63,9 @@ router.put("/", upload_files, async (req, res, next) => {
     // check if the request has a new data
     if (
       !req.body.english_title &&
+      !req.body.arabic_title &&
       !req.body.english_description &&
+      !req.body.arabic_description &&
       !req.body.link &&
       !req.body.created_at &&
       !req.body.tags &&
