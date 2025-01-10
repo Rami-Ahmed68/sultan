@@ -5,7 +5,7 @@ const user = new mongoose.Schema({
     type: String,
     required: true,
   },
-  english_name: {
+  arabic_name: {
     type: String,
     required: true,
   },
@@ -21,7 +21,7 @@ const user = new mongoose.Schema({
     type: String,
     required: true,
   },
-  english_description: {
+  arabic_description: {
     type: String,
     required: true,
   },
@@ -29,7 +29,7 @@ const user = new mongoose.Schema({
     type: String,
     required: true,
   },
-  english_bio: {
+  arabic_bio: {
     type: String,
     required: true,
   },
