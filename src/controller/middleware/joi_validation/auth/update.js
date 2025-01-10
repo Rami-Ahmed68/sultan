@@ -9,7 +9,7 @@ const validate_error = (data) => {
     password: Joi.string().allow(""),
     english_description: Joi.string().allow(""),
     english_bio: Joi.string().allow(""),
-    english_description: Joi.string().allow(""),
+    arabic_description: Joi.string().allow(""),
     english_bio: Joi.string().allow(""),
     whatsapp: Joi.string().allow(""),
     telegram: Joi.string().allow(""),
