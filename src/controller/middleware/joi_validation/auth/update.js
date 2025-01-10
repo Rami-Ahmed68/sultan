@@ -5,6 +5,7 @@ const validate_error = (data) => {
   // create a Schema
   const Schema = Joi.object().keys({
     english_name: Joi.string().allow(""),
+    arabic_name: Joi.string().allow(""),
     password: Joi.string().allow(""),
     english_description: Joi.string().allow(""),
     english_bio: Joi.string().allow(""),
