@@ -28,7 +28,6 @@ const change_avatar = require("./src/router/auth/change.avatar");
 const change_cv = require("./src/router/auth/change.cv");
 const get_admin_data = require("./src/router/auth/get");
 const get_admin_links = require("./src/router/auth/get_links");
-const get_admin_links = require("./src/router/auth/get_links");
 const get_admin_cv = require("./src/router/auth/get.cv");
 // importing the auth files
 
