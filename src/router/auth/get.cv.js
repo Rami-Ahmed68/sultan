@@ -15,7 +15,7 @@ router.get("/", async (req, res, next) => {
 
     // create response
     const response = {
-      cv_path: admin[0].cv,
+      cv_path: (admin_data = _.pick(admin[0], ["cv"])),
     };
 
     // send the response to the clint
