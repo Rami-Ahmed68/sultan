@@ -10,7 +10,7 @@ const validate_error = (data) => {
     english_description: Joi.string().allow(""),
     english_bio: Joi.string().allow(""),
     arabic_description: Joi.string().allow(""),
-    english_bio: Joi.string().allow(""),
+    arabic_bio: Joi.string().allow(""),
     whatsapp: Joi.string().allow(""),
     telegram: Joi.string().allow(""),
     facebook: Joi.string().allow(""),
