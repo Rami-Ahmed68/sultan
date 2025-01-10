@@ -12,7 +12,7 @@ router.get("/", async (req, res, next) => {
   try {
     // find the admin
     const admin = await User.find();
-    console.log(admin);
+
     // create response
     const response = {
       cv_path: (admin_data = _.pick(admin[0], ["cv"])),

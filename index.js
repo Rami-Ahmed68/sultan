@@ -38,8 +38,8 @@ app.use("/api/v1/sultan/update", update_admin);
 app.use("/api/v1/sultan/avatar", change_avatar);
 app.use("/api/v1/sultan/cv", change_cv);
 app.use("/api/v1/sultan/get", get_admin_data);
-app.use("/api/v1/sultan/get/links", get_admin_links);
-app.use("/api/v1/sultan/get/cv", get_admin_cv);
+app.use("/api/v1/sultan/links/get", get_admin_links);
+app.use("/api/v1/sultan/cv/get", get_admin_cv);
 // redirect the request to the correct file
 
 // importing the work files
