@@ -29,7 +29,7 @@ const change_cv = require("./src/router/auth/change.cv");
 const get_admin_data = require("./src/router/auth/get");
 const get_admin_links = require("./src/router/auth/get_links");
 const get_admin_cv = require("./src/router/auth/get.cv");
-const get_admin_cv = require("./src/router/skills_page/get.skills.page.status");
+const get_skills_page_status = require("./src/router/skills_page/get.skills.page.status");
 // importing the auth files
 
 // testing
@@ -43,7 +43,7 @@ app.use("/api/v1/sultan/cv", change_cv);
 app.use("/api/v1/sultan/get", get_admin_data);
 app.use("/api/v1/sultan/links/get", get_admin_links);
 app.use("/api/v1/sultan/cv/get", get_admin_cv);
-app.use("/api/v1/sultan/skills/page/get/status", get_admin_cv);
+app.use("/api/v1/sultan/skills/page/get/status", get_skills_page_status);
 // redirect the request to the correct file
 
 // importing the work files
