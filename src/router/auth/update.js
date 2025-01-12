@@ -52,8 +52,7 @@ router.put("/", async (req, res, next) => {
       !req.body.linkedIn &&
       !req.body.behance &&
       !req.body.email_address &&
-      !req.body.phone &&
-      !req.body.skills_page_status
+      !req.body.phone
     ) {
       // return error
       return next(
@@ -121,9 +120,6 @@ router.put("/", async (req, res, next) => {
           ? req.body.email_address
           : admin.email_address,
         phone: req.body.phone ? req.body.phone : admin.phone,
-        skills_page_status: req.body.skills_page_status
-          ? req.body.skills_page_status
-          : admin.skills_page_status,
       },
       { new: true }
     );
@@ -146,7 +142,6 @@ router.put("/", async (req, res, next) => {
         "linkedIn",
         "behance",
         "email_address",
-        "skills_page_status",
       ]),
     };
 

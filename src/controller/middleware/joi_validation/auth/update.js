@@ -19,7 +19,6 @@ const validate_error = (data) => {
     behance: Joi.string().allow(""),
     email_address: Joi.string().allow(""),
     phone: Joi.string().allow(""),
-    skills_page_status: Joi.boolean().required(),
   });
 
   // validate the body data
