@@ -70,6 +70,7 @@ router.put("/", upload_files, async (req, res, next) => {
       !req.body.created_at &&
       !req.body.tags &&
       !req.body.images_for_delete &&
+      !req.body.video_reaction &&
       !req.files
     ) {
       // return the error
