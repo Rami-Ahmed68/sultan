@@ -40,7 +40,7 @@ router.delete("/", async (req, res, next) => {
         )
       );
     }
-    console.log(req.headers.authorization);
+
     // verify token data
     const verify_token_data = await verify_token(
       req.headers.authorization,
