@@ -93,8 +93,12 @@ router.put("/", async (req, res, next) => {
     const new_admin = await User.findByIdAndUpdate(
       { _id: admin._id },
       {
-        english_name: req.body.english_name ? req.body.english_name : "",
-        arabic_name: req.body.arabic_name ? req.body.arabic_name : "",
+        english_name: req.body.english_name
+          ? req.body.english_name
+          : admin.english_name,
+        arabic_name: req.body.arabic_name
+          ? req.body.arabic_name
+          : admin.arabic_name,
         password: req.body.password
           ? await hash(req.body.password)
           : admin.password,
@@ -143,6 +147,10 @@ router.put("/", async (req, res, next) => {
         "behance",
         "email_address",
       ]),
+      messages: {
+        english: "Info updated successfully",
+        arabic: "تم تعديل البيانات بنجاح",
+      },
     };
 
     // send the response to clinte
