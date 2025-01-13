@@ -201,7 +201,7 @@ router.put("/", upload_files, async (req, res, next) => {
             ? req.body.arabic_description
             : work.arabic_description,
           link: req.body.link ? req.body.link : work.link,
-          tags: req.body.tags ? JSON.parse(req.body.tags) : work.tags,
+          tags: req.body.tags ? req.body.tags.split(".") : work.tags,
           created_at: req.body.created_at
             ? req.body.created_at
             : work.created_at,
