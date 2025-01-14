@@ -72,6 +72,7 @@ router.put("/", upload_files, async (req, res, next) => {
       !req.body.images_for_delete &&
       !req.body.program &&
       !req.body.level &&
+      !req.body.video_reaction &&
       !req.files
     ) {
       // return the error
@@ -202,7 +203,7 @@ router.put("/", upload_files, async (req, res, next) => {
             ? req.body.arabic_description
             : lesson.arabic_description,
           link: req.body.link ? req.body.link : lesson.link,
-          tags: req.body.tags ? JSON.parse(req.body.tags) : lesson.tags,
+          tags: req.body.tags ? req.body.tags.split(".") : lesson.tags,
           created_at: req.body.created_at
             ? req.body.created_at
             : lesson.created_at,
@@ -232,15 +233,16 @@ router.put("/", upload_files, async (req, res, next) => {
 
     // check if the request has a images for delete
     if (req.body.images_for_delete) {
-      let coverted_images_for_delete = JSON.parse(req.body.images_for_delete);
+      let splited_images_for_delete =
+        req.body.images_for_delete.split("split_here");
 
       // delete the images
-      for (let i = 0; i < coverted_images_for_delete.length; i++) {
-        await delete_cloudinary_images(coverted_images_for_delete[i], next);
+      for (let i = 0; i < splited_images_for_delete.length; i++) {
+        await delete_cloudinary_images(splited_images_for_delete[i], next);
 
         // filter the lesson's images array
         lesson.images = lesson.images.filter((url) => {
-          return url != coverted_images_for_delete[i];
+          return url != splited_images_for_delete[i];
         });
       }
     }

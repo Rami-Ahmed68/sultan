@@ -96,7 +96,7 @@ router.post("/", upload_files, async (req, res, next) => {
       video: "",
       images: [],
       created_at: req.body.created_at,
-      tags: req.body.tags ? req.body.tags.split(",") : [],
+      tags: req.body.tags.split("."),
       program: req.body.program,
       level: req.body.level,
     });

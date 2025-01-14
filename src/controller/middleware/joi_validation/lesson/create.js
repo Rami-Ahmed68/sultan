@@ -8,7 +8,7 @@ const validation_data = (data) => {
     arabic_description: Joi.string().required(),
     created_at: Joi.string().required(),
     link: Joi.string(),
-    tags: Joi.string(),
+    tags: Joi.string().required(),
     program: Joi.string().required(),
     level: Joi.string().required(),
   });
