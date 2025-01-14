@@ -35,286 +35,290 @@ const DeleteImage = require("../../controller/utils/multer/delete.files");
 const verify_token = require("../../controller/utils/token/verify_token");
 
 router.put("/", upload_files, async (req, res, next) => {
-  // try {
-  // validate body data
-  const Error = validation_data(req.body);
+  try {
+    // validate body data
+    const Error = validation_data(req.body);
 
-  // check if the body data has any error
-  if (Error.error) {
-    // check if the request has any file
+    // check if the body data has any error
+    if (Error.error) {
+      // check if the request has any file
+      if (req.files && req.files.length > 0) {
+        for (let i = 0; i < req.files.length; i++) {
+          DeleteImage(req.files[i], next);
+        }
+      }
+
+      // return the error
+      return next(
+        new ApiErrors(
+          JSON.stringify({
+            english: `${Error.error.details[0].message} ...`,
+            arabic: "... عذرا خطأ في البيانات المرسلة",
+          }),
+          400
+        )
+      );
+    }
+
+    // check if the request has a new data
+    if (
+      !req.body.english_title &&
+      !req.body.english_description &&
+      !req.body.arabic_title &&
+      !req.body.arabic_description &&
+      !req.body.link &&
+      !req.body.created_at &&
+      !req.body.tags &&
+      !req.body.images_for_delete &&
+      !req.body.video_reaction &&
+      !req.files
+    ) {
+      // return the error
+      return next(
+        new ApiErrors(
+          JSON.stringify({
+            english: "Sorry, you should send a new data ...",
+            arabic: "... عذرا يجب ارسال بيانات جديدة",
+          }),
+          403
+        )
+      );
+    }
+
+    // filter all images of files in request
+    let images = await req.files.filter((file) => {
+      return file.mimetype.startsWith("image");
+    });
+
+    // filter all vidoes of files in request
+    let videos = await req.files.filter((file) => {
+      return file.mimetype.startsWith("video");
+    });
+
+    // check if the videos length is more than 1
+    if (videos.length > 1) {
+      // dlete all uploaded files
+      for (let i = 0; i < req.files.length; i++) {
+        DeleteImage(req.files[i], next);
+      }
+
+      // return the error
+      return next(
+        new ApiErrors(
+          JONS.stringify({
+            english: "Sorry, you can't upload more than one video ...",
+            arabic: "... عذرا لا يمكنك تحميل اكثر من فيديو واحد",
+          }),
+          403
+        )
+      );
+    }
+
+    // verify the token data
+    const verify_token_data = await verify_token(
+      req.headers.authorization,
+      next
+    );
+
+    // check if the admin's id in token is equal id in body
+    if (req.body.admin_id != verify_token_data._id) {
+      // dlete all uploaded files
+      for (let i = 0; i < req.files.length; i++) {
+        DeleteImage(req.files[i], next);
+      }
+
+      // return the error
+      return next(
+        new ApiErrors(
+          JSON.stringify({
+            english: "Sorry, invalid admin data ...",
+            arabic: "... عذرا خطأ في بيانات الأدمن",
+          }),
+          400
+        )
+      );
+    }
+
+    // find the admin
+    const admin = await User.findById(req.body.admin_id);
+
+    // check if the admin is exists
+    if (!admin) {
+      // dlete all uploaded files
+      for (let i = 0; i < req.files.length; i++) {
+        DeleteImage(req.files[i], next);
+      }
+
+      // return the error
+      return next(
+        new ApiErrors(
+          JSON.stringify({
+            english: "Sorry, invalid admin not found ...",
+            arabic: "... عذرا لم يتم العثور على الأدمن",
+          }),
+          404
+        )
+      );
+    }
+
+    // find the work
+    const work = await Work.findById(req.body.work_id);
+
+    // check if the work is exists
+    if (!work) {
+      // dlete all uploaded files
+      for (let i = 0; i < req.files.length; i++) {
+        DeleteImage(req.files[i], next);
+      }
+
+      // return the error
+      return next(
+        new ApiErrors(
+          JSON.stringify({
+            english: "Sorry, invalid work not found ...",
+            arabic: "... عذرا لم يتم العثور على العمل",
+          }),
+          404
+        )
+      );
+    }
+
+    // find and update the work
+    const updated_work = await Work.findByIdAndUpdate(
+      { _id: req.body.work_id },
+      {
+        $set: {
+          english_title: req.body.english_title
+            ? req.body.english_title
+            : work.english_title,
+          english_description: req.body.english_description
+            ? req.body.english_description
+            : work.english_description,
+          arabic_title: req.body.arabic_title
+            ? req.body.arabic_title
+            : work.arabic_title,
+          arabic_description: req.body.arabic_description
+            ? req.body.arabic_description
+            : work.arabic_description,
+          link: req.body.link ? req.body.link : work.link,
+          // tags: req.body.tags ? req.body.tags.split(".") : work.tags,
+          created_at: req.body.created_at
+            ? req.body.created_at
+            : work.created_at,
+        },
+      },
+      { new: true }
+    );
+
+    // check if th requets has a tags
+    if (req.body.tags) {
+      // set the new array of the tags ti the updated_work's tags
+      updated_work.tags = req.body.tags.split(".");
+    }
+
+    // svae the updated work to check id the tags has any error
+    await updated_work.save();
+
+    // check if the work already has a video
+    if (
+      (work.video && work.video != "" && videos.length == 1) ||
+      (work.video != "" &&
+        req.body.video_reaction &&
+        req.body.video_reaction == "delete")
+    ) {
+      // delete the old video
+      await delete_cloudinary_video(work.video, next);
+
+      // set a empty video url to updated_work
+      updated_work.video = "";
+    }
+
+    // check if the request has a images for delete
+    if (req.body.images_for_delete) {
+      let splited_images_for_delete =
+        req.body.images_for_delete.split("split_here");
+
+      // delete the images
+      for (let i = 0; i < splited_images_for_delete.length; i++) {
+        await delete_cloudinary_images(splited_images_for_delete[i], next);
+
+        // filter the work's images array
+        work.images = work.images.filter((url) => {
+          return url != splited_images_for_delete[i];
+        });
+      }
+    }
+
+    // check if the request has a video file
+    if (
+      (videos.length == 1 && !req.body.video_reaction) ||
+      (req.body.video_reaction && req.body.video_reaction != "delete")
+    ) {
+      // upload the new video
+      const new_video = await upload_cloudinary_video(videos[0], "work", next);
+
+      // set the new video utl to work's video
+      updated_work.video = new_video;
+    }
+
+    // check if the request has any images file
+    if (images.length > 0) {
+      // upload the images
+      for (let i = 0; i < images.length; i++) {
+        let uploaded_image_url = await upload_cloudinary_image(
+          images[i],
+          "work",
+          next
+        );
+
+        work.images.push(uploaded_image_url);
+      }
+    }
+
+    // set the images array to the updated work
+    updated_work.images = work.images;
+
+    // check if the requets has any file
+    if (req.files && req.files.length > 0) {
+      // delete all uploaded files from work
+      for (let i = 0; i < req.files.length; i++) {
+        DeleteImage(req.files[i], next);
+      }
+    }
+
+    // svae the update work
+    await updated_work.save();
+
+    // create response
+    const response = {
+      message: {
+        english: "Work updated successfully",
+        arabic: "تم تعديل العمل بنجاح",
+      },
+      work_data: updated_work,
+    };
+
+    // send the response to clint
+    res.status(200).send(response);
+  } catch (error) {
+    // check if the body has an file
     if (req.files && req.files.length > 0) {
       for (let i = 0; i < req.files.length; i++) {
         DeleteImage(req.files[i], next);
       }
     }
 
-    // return the error
+    //return the error
     return next(
       new ApiErrors(
         JSON.stringify({
-          english: `${Error.error.details[0].message} ...`,
-          arabic: "... عذرا خطأ في البيانات المرسلة",
+          english: `${error} ...`,
+          arabic: "... عذرا خطأ عام",
         }),
-        400
+        500
       )
     );
   }
-
-  // check if the request has a new data
-  if (
-    !req.body.english_title &&
-    !req.body.english_description &&
-    !req.body.arabic_title &&
-    !req.body.arabic_description &&
-    !req.body.link &&
-    !req.body.created_at &&
-    !req.body.tags &&
-    !req.body.images_for_delete &&
-    !req.body.video_reaction &&
-    !req.files
-  ) {
-    // return the error
-    return next(
-      new ApiErrors(
-        JSON.stringify({
-          english: "Sorry, you should send a new data ...",
-          arabic: "... عذرا يجب ارسال بيانات جديدة",
-        }),
-        403
-      )
-    );
-  }
-
-  // filter all images of files in request
-  let images = await req.files.filter((file) => {
-    return file.mimetype.startsWith("image");
-  });
-
-  // filter all vidoes of files in request
-  let videos = await req.files.filter((file) => {
-    return file.mimetype.startsWith("video");
-  });
-
-  // check if the videos length is more than 1
-  if (videos.length > 1) {
-    // dlete all uploaded files
-    for (let i = 0; i < req.files.length; i++) {
-      DeleteImage(req.files[i], next);
-    }
-
-    // return the error
-    return next(
-      new ApiErrors(
-        JONS.stringify({
-          english: "Sorry, you can't upload more than one video ...",
-          arabic: "... عذرا لا يمكنك تحميل اكثر من فيديو واحد",
-        }),
-        403
-      )
-    );
-  }
-
-  // verify the token data
-  const verify_token_data = await verify_token(req.headers.authorization, next);
-
-  // check if the admin's id in token is equal id in body
-  if (req.body.admin_id != verify_token_data._id) {
-    // dlete all uploaded files
-    for (let i = 0; i < req.files.length; i++) {
-      DeleteImage(req.files[i], next);
-    }
-
-    // return the error
-    return next(
-      new ApiErrors(
-        JSON.stringify({
-          english: "Sorry, invalid admin data ...",
-          arabic: "... عذرا خطأ في بيانات الأدمن",
-        }),
-        400
-      )
-    );
-  }
-
-  // find the admin
-  const admin = await User.findById(req.body.admin_id);
-
-  // check if the admin is exists
-  if (!admin) {
-    // dlete all uploaded files
-    for (let i = 0; i < req.files.length; i++) {
-      DeleteImage(req.files[i], next);
-    }
-
-    // return the error
-    return next(
-      new ApiErrors(
-        JSON.stringify({
-          english: "Sorry, invalid admin not found ...",
-          arabic: "... عذرا لم يتم العثور على الأدمن",
-        }),
-        404
-      )
-    );
-  }
-
-  // find the work
-  const work = await Work.findById(req.body.work_id);
-
-  // check if the work is exists
-  if (!work) {
-    // dlete all uploaded files
-    for (let i = 0; i < req.files.length; i++) {
-      DeleteImage(req.files[i], next);
-    }
-
-    // return the error
-    return next(
-      new ApiErrors(
-        JSON.stringify({
-          english: "Sorry, invalid work not found ...",
-          arabic: "... عذرا لم يتم العثور على العمل",
-        }),
-        404
-      )
-    );
-  }
-
-  // find and update the work
-  const updated_work = await Work.findByIdAndUpdate(
-    { _id: req.body.work_id },
-    {
-      $set: {
-        english_title: req.body.english_title
-          ? req.body.english_title
-          : work.english_title,
-        english_description: req.body.english_description
-          ? req.body.english_description
-          : work.english_description,
-        arabic_title: req.body.arabic_title
-          ? req.body.arabic_title
-          : work.arabic_title,
-        arabic_description: req.body.arabic_description
-          ? req.body.arabic_description
-          : work.arabic_description,
-        link: req.body.link ? req.body.link : work.link,
-        // tags: req.body.tags ? req.body.tags.split(".") : work.tags,
-        created_at: req.body.created_at ? req.body.created_at : work.created_at,
-      },
-    },
-    { new: true }
-  );
-
-  // check if th requets has a tags
-  if (req.body.tags) {
-    // set the new array of the tags ti the updated_work's tags
-    updated_work.tags = req.body.tags.split(".");
-  }
-
-  // svae the updated work to check id the tags has any error
-  await updated_work.save();
-
-  // check if the work already has a video
-  if (
-    (work.video && work.video != "" && videos.length == 1) ||
-    (work.video != "" &&
-      req.body.video_reaction &&
-      req.body.video_reaction == "delete")
-  ) {
-    // delete the old video
-    await delete_cloudinary_video(work.video, next);
-
-    // set a empty video url to updated_work
-    updated_work.video = "";
-  }
-
-  // check if the request has a images for delete
-  if (req.body.images_for_delete) {
-    let splited_images_for_delete =
-      req.body.images_for_delete.split("split_here");
-    console.log(splited_images_for_delete);
-
-    // delete the images
-    for (let i = 0; i < splited_images_for_delete.length; i++) {
-      await delete_cloudinary_images(splited_images_for_delete[i], next);
-
-      // filter the work's images array
-      work.images = work.images.filter((url) => {
-        return url != splited_images_for_delete[i];
-      });
-    }
-  }
-
-  // check if the request has a video file
-  if (
-    (videos.length == 1 && !req.body.video_reaction) ||
-    (req.body.video_reaction && req.body.video_reaction != "delete")
-  ) {
-    // upload the new video
-    const new_video = await upload_cloudinary_video(videos[0], "work", next);
-
-    // set the new video utl to work's video
-    updated_work.video = new_video;
-  }
-
-  // check if the request has any images file
-  if (images.length > 0) {
-    // upload the images
-    for (let i = 0; i < images.length; i++) {
-      let uploaded_image_url = await upload_cloudinary_image(
-        images[i],
-        "work",
-        next
-      );
-
-      work.images.push(uploaded_image_url);
-    }
-  }
-
-  // set the images array to the updated work
-  updated_work.images = work.images;
-
-  // check if the requets has any file
-  if (req.files && req.files.length > 0) {
-    // delete all uploaded files from work
-    for (let i = 0; i < req.files.length; i++) {
-      DeleteImage(req.files[i], next);
-    }
-  }
-
-  // svae the update work
-  await updated_work.save();
-
-  // create response
-  const response = {
-    message: {
-      english: "Work updated successfully",
-      arabic: "تم تعديل العمل بنجاح",
-    },
-    work_data: updated_work,
-  };
-
-  // send the response to clint
-  res.status(200).send(response);
-  // } catch (error) {
-  //   // check if the body has an file
-  //   if (req.files && req.files.length > 0) {
-  //     for (let i = 0; i < req.files.length; i++) {
-  //       DeleteImage(req.files[i], next);
-  //     }
-  //   }
-
-  //   //return the error
-  //   return next(
-  //     new ApiErrors(
-  //       JSON.stringify({
-  //         english: `${error} ...`,
-  //         arabic: "... عذرا خطأ عام",
-  //       }),
-  //       500
-  //     )
-  //   );
-  // }
 });
 
 module.exports = router;
