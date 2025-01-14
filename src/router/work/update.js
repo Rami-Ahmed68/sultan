@@ -201,7 +201,7 @@ router.put("/", upload_files, async (req, res, next) => {
             ? req.body.arabic_description
             : work.arabic_description,
           link: req.body.link ? req.body.link : work.link,
-          tags: req.body.tags ? req.body.tags.split(".") : work.tags,
+          // tags: req.body.tags ? req.body.tags.split(".") : work.tags,
           created_at: req.body.created_at
             ? req.body.created_at
             : work.created_at,
@@ -209,6 +209,12 @@ router.put("/", upload_files, async (req, res, next) => {
       },
       { new: true }
     );
+
+    // check if th requets has a tags
+    if (req.body.tags) {
+      // set the new array of the tags ti the updated_work's tags
+      updated_work.tags = req.body.tags.split(".");
+    }
 
     // svae the updated work to check id the tags has any error
     await updated_work.save();
