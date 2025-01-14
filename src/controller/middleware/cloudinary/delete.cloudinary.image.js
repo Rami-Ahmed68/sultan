@@ -12,7 +12,7 @@ cloudinary.config({
   api_secret: process.env.API_SECRET_KEY,
 });
 
-const delete_cloudinary_images = async (image, next) => {
+const delete_cloudinary = async (image, next) => {
   try {
     // split the omage url
     const Image_url = image.split("/");
@@ -39,4 +39,4 @@ const delete_cloudinary_images = async (image, next) => {
   }
 };
 
-module.exports = delete_cloudinary_images;
+module.exports = delete_cloudinary;
