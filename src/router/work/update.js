@@ -235,15 +235,15 @@ router.put("/", upload_files, async (req, res, next) => {
 
     // check if the request has a images for delete
     if (req.body.images_for_delete) {
-      let coverted_images_for_delete = JSON.parse(req.body.images_for_delete);
-
+      let converted_images_for_delete = JSON.parse(req.body.images_for_delete);
+      console.log(converted_images_for_delete);
       // delete the images
-      for (let i = 0; i < coverted_images_for_delete.length; i++) {
-        await delete_cloudinary_images(coverted_images_for_delete[i], next);
+      for (let i = 0; i < converted_images_for_delete.length; i++) {
+        await delete_cloudinary_images(converted_images_for_delete[i], next);
 
         // filter the work's images array
         work.images = work.images.filter((url) => {
-          return url != coverted_images_for_delete[i];
+          return url != converted_images_for_delete[i];
         });
       }
     }
