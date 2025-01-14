@@ -233,6 +233,7 @@ router.put("/", upload_files, async (req, res, next) => {
     let splited_images_for_delete =
       req.body.images_for_delete.split("split_here");
     console.log(splited_images_for_delete);
+
     // delete the images
     for (let i = 0; i < splited_images_for_delete.length; i++) {
       await delete_cloudinary_images(splited_images_for_delete[i], next);
