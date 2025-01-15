@@ -69,7 +69,7 @@ router.post("/", upload_files, async (req, res, next) => {
       // check if the request has any image
       if (req.files.length > 0) {
         // delete the images
-        for (leti = 0; i < req.files.length; i++) {
+        for (let i = 0; i < req.files.length; i++) {
           DeleteImage(req.files[i], next);
         }
       }
