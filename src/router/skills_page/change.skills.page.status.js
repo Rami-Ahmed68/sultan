@@ -78,6 +78,10 @@ router.put("/", async (req, res, next) => {
     // create response
     const response = {
       skills_page_status: admin.skills_page_status,
+      messgae: {
+        english: "Updated Successfully",
+        arabic: "تم التعديل بنجاح",
+      },
     };
 
     // send the response to clinte
