@@ -72,6 +72,9 @@ router.put("/", async (req, res, next) => {
     // update the skills_page_status in admin
     admin.skills_page_status = req.body.skills_page_status;
 
+    // save the admin after changed
+    await admin.save();
+
     // create response
     const response = {
       skills_page_status: admin.skills_page_status,
