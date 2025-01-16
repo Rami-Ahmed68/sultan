@@ -47,6 +47,19 @@ router.post("/", upload_icon, async (req, res, next) => {
       );
     }
 
+    // check if the requets has a cioicon or not
+    if (!req.files || req.files.length == 0) {
+      // return error
+      return next(
+        new ApiErrors(
+          JSON.stringify({
+            english: "Sorry, you must upload at least one icon ...",
+            arabic: "... عذرا يجب عليك رفع ايقونة واحدة على الأقل",
+          }),
+          403
+        )
+      );
+    }
     // check if the request has more than one icon
     if (req.files && req.files.length > 1) {
       // delete the uploaded icons
