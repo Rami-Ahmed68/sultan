@@ -100,6 +100,14 @@ app.use("/api/v1/sultan/skill/get/all", get_skills);
 app.use("/api/v1/sultan/skill/change/icon", change_icon_skill);
 // redirect the request to the correct file
 
+// importing the message files
+const create_message = require("./src/router/message/create");
+// importing the message files
+
+// redirect the request to the correct file
+app.use("/api/v1/sultan/message/craete", create_message);
+// redirect the request to the correct file
+
 // importing the skill page status files
 const change_skills_page_status = require("./src/router/skills_page/change.skills.page.status");
 // importing the skill page status files
