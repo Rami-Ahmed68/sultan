@@ -102,10 +102,16 @@ app.use("/api/v1/sultan/skill/change/icon", change_icon_skill);
 
 // importing the message files
 const create_message = require("./src/router/message/create");
+const delete_message = require("./src/router/message/delete");
+const get_message = require("./src/router/message/get.all");
+const get_message_count = require("./src/router/message/get.count");
 // importing the message files
 
 // redirect the request to the correct file
 app.use("/api/v1/sultan/message/craete", create_message);
+app.use("/api/v1/sultan/message/delete", delete_message);
+app.use("/api/v1/sultan/message/get", get_message);
+app.use("/api/v1/sultan/message/get/count", get_message_count);
 // redirect the request to the correct file
 
 // importing the skill page status files
