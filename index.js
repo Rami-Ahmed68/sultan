@@ -108,7 +108,7 @@ const get_message_count = require("./src/router/message/get.count");
 // importing the message files
 
 // redirect the request to the correct file
-app.use("/api/v1/sultan/message/craete", create_message);
+app.use("/api/v1/sultan/message/create", create_message);
 app.use("/api/v1/sultan/message/delete", delete_message);
 app.use("/api/v1/sultan/message/get", get_message);
 app.use("/api/v1/sultan/message/get/count", get_message_count);
