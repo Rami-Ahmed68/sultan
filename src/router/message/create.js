@@ -47,7 +47,7 @@ router.post("/", async (req, res, next) => {
     // create a new message
     const message = new Message({
       name: req.body.message,
-      email: req.body.emauil ? req.body.email : "",
+      email: req.body.email ? req.body.email : "",
       phone_number: req.body.phone_number ? req.body.phone_number : "",
       whatsapp: req.body.whatsapp ? req.body.whatsapp : "",
       message: req.body.message,

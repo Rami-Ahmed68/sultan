@@ -116,7 +116,7 @@ router.delete("/", async (req, res, next) => {
     }
 
     // delete the finded lesson
-    await lesson.deleteOne(lesson._id);
+    await Lesson.deleteOne(lesson._id);
 
     // create the response
     const response = {
